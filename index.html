@@ -1,283 +1,216 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Online Classes Widget</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+<style>
+* { box-sizing: border-box; }
 
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-        sans-serif;
-      background: transparent; /* IMPORTANT */
-      color: #111827;
-    }
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: transparent; /* KEY FIX */
+  color: #111827;
+}
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 16px;
-      background: transparent;
-    }
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 16px;
+  background: transparent;
+}
 
-    .classes-section {
-      margin: 8px 0 24px;
-      background: transparent;
-    }
+.classes-section {
+  background: transparent;
+}
 
-    .classes-heading {
-      font-size: 20px;
-      font-weight: 600;
-      border-left: 3px solid #2d6bfa;
-      padding-left: 8px;
-      margin-bottom: 12px;
-    }
+.classes-heading {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
 
-    @media (min-width: 640px) {
-      .classes-heading {
-        font-size: 24px;
-        border-left: none;
-        padding-left: 0;
-      }
-    }
+.classes-highlights {
+  display: flex;
+  gap: 16px;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
 
-    .classes-highlights {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px 16px;
-      font-size: 12px;
-      margin-bottom: 16px;
-    }
+.highlight-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
 
-    .highlight-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      color: #4b5563;
-    }
+.highlight-check {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #ebf2ff;
+  color: #2563eb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
 
-    .highlight-check {
-      width: 16px;
-      height: 16px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      background: #ebf2ff;
-      color: #2563eb;
-      font-size: 12px;
-      flex-shrink: 0;
-    }
+.carousel {
+  position: relative;
+}
 
-    .carousel {
-      position: relative;
-      margin-top: 8px;
-    }
+.carousel-header {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 10px;
+}
 
-    .carousel-header {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
+.carousel-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #e5e7eb;
+  background: rgba(255,255,255,0.85);
+  cursor: pointer;
+}
 
-    .carousel-viewport {
-      overflow: hidden;
-      width: 100%;
-    }
+.carousel-viewport {
+  overflow: hidden;
+}
 
-    .carousel-track {
-      display: flex;
-      gap: 16px;
-      will-change: transform;
-      transition: transform 0.3s ease;
-    }
+.carousel-track {
+  display: flex;
+  gap: 16px;
+  transition: transform 0.3s ease;
+}
 
-    .carousel-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 999px;
-      border: 1px solid #e5e7eb;
-      background: rgba(255, 255, 255, 0.85); /* blend */
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.12);
-      transition: background 0.2s ease, transform 0.2s ease,
-        box-shadow 0.2s ease;
-    }
+/* CARD */
+.course-card {
+  flex: 0 0 260px;
+  background: rgba(255,255,255,0.92);
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.06);
+  overflow: hidden;
+  cursor: pointer;
+}
 
-    .carousel-btn svg {
-      width: 18px;
-      height: 18px;
-      stroke: #111827;
-    }
+.course-image-wrapper {
+  position: relative;
+  padding-top: 60%;
+}
 
-    .carousel-btn:hover {
-      background: rgba(255, 255, 255, 0.95);
-      transform: translateY(-1px);
-    }
+.course-image-wrapper img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
-    .carousel-btn:disabled {
-      opacity: 0.4;
-      cursor: default;
-      box-shadow: none;
-      transform: translateY(0);
-    }
+.course-content {
+  padding: 10px 12px;
+}
 
-    .course-card {
-      flex: 0 0 100%;
-      max-width: 260px;
-      background: rgba(255, 255, 255, 0.92); /* NOT pure white */
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(0, 0, 0, 0.06);
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      margin-bottom: 4px;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
-    }
+.course-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0;
+}
 
-    .course-card:hover {
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.14);
-      transform: translateY(-1px);
-    }
-
-    .course-image-wrapper {
-      width: 100%;
-      padding-top: 60%;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .course-image-wrapper img {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    .course-content {
-      padding: 10px 12px 12px;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
-    .course-title {
-      font-size: 14px;
-      font-weight: 600;
-      margin: 0;
-      line-height: 1.3;
-    }
-
-    .course-provider {
-      font-size: 12px;
-      color: #6b7280;
-      margin-top: 6px;
-    }
-
-    .course-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 4px 8px;
-      margin-top: 8px;
-      font-size: 12px;
-      color: #4b5563;
-    }
-
-    @media (min-width: 480px) {
-      .course-card {
-        flex: 0 0 calc(50% - 8px);
-      }
-    }
-
-    @media (min-width: 768px) {
-      .course-card {
-        flex: 0 0 calc(33.333% - 10px);
-      }
-    }
-
-    @media (min-width: 1024px) {
-      .course-card {
-        flex: 0 0 calc(25% - 12px);
-      }
-    }
-  </style>
+.course-provider {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 6px;
+}
+</style>
 </head>
 
 <body>
-  <main class="container">
-    <section class="classes-section">
-      <h3 class="classes-heading">Online classes of 375+ Exams</h3>
+<div class="container">
+<section class="classes-section">
 
-      <div class="classes-highlights">
-        <div class="highlight-item"><span class="highlight-check">✓</span>Chat live with educators</div>
-        <div class="highlight-item"><span class="highlight-check">✓</span>Attempt interactive polls</div>
-        <div class="highlight-item"><span class="highlight-check">✓</span>Get your doubts cleared</div>
-      </div>
+<h3 class="classes-heading">Online classes of 375+ Exams</h3>
 
-      <div class="carousel">
-        <div class="carousel-header">
-          <button class="carousel-btn" data-prev>‹</button>
-          <button class="carousel-btn" data-next>›</button>
+<div class="classes-highlights">
+  <div class="highlight-item"><span class="highlight-check">✓</span>Chat live with educators</div>
+  <div class="highlight-item"><span class="highlight-check">✓</span>Interactive polls</div>
+  <div class="highlight-item"><span class="highlight-check">✓</span>Doubt clearing</div>
+</div>
+
+<div class="carousel">
+  <div class="carousel-header">
+    <button class="carousel-btn" data-prev>‹</button>
+    <button class="carousel-btn" data-next>›</button>
+  </div>
+
+  <div class="carousel-viewport" data-viewport>
+    <div class="carousel-track" data-track>
+
+      <!-- CARD 1 -->
+      <article class="course-card">
+        <div class="course-image-wrapper">
+          <img src="https://cdn.testbook.com/products/2025/October/14/__w-200-400-600__/RRB%20ALP%202025.png.png">
         </div>
-
-        <div class="carousel-viewport" data-viewport>
-          <div class="carousel-track" data-track>
-            <!-- Your existing course cards stay unchanged -->
-          </div>
+        <div class="course-content">
+          <p class="course-title">RRB ALP 2025 निश्चय Live Batch</p>
+          <p class="course-provider">Testbook & Team</p>
         </div>
-      </div>
-    </section>
-  </main>
+      </article>
 
-  <script>
-    (function () {
-      const viewport = document.querySelector("[data-viewport]");
-      const track = document.querySelector("[data-track]");
-      const prevBtn = document.querySelector("[data-prev]");
-      const nextBtn = document.querySelector("[data-next]");
-      if (!viewport || !track) return;
+      <!-- CARD 2 -->
+      <article class="course-card">
+        <div class="course-image-wrapper">
+          <img src="https://cdn.testbook.com/products/2025/September/29/__w-200-400-600__/SSC%20CGL%20Foundation.png.png">
+        </div>
+        <div class="course-content">
+          <p class="course-title">SSC CGL नीव Live Course 2026</p>
+          <p class="course-provider">Testbook & Team</p>
+        </div>
+      </article>
 
-      let index = 0;
-      const cards = track.children;
+      <!-- CARD 3 -->
+      <article class="course-card">
+        <div class="course-image-wrapper">
+          <img src="https://cdn.testbook.com/products/2025/November/20/__w-200-400-600__/KVS%202025.png.png">
+        </div>
+        <div class="course-content">
+          <p class="course-title">KVS 2025 (TGT/PGT/PRT)</p>
+          <p class="course-provider">Testbook & Team</p>
+        </div>
+      </article>
 
-      function cardsPerView() {
-        const w = viewport.clientWidth;
-        if (w >= 1024) return 4;
-        if (w >= 768) return 3;
-        if (w >= 480) return 2;
-        return 1;
-      }
+    </div>
+  </div>
+</div>
 
-      function update() {
-        const card = cards[0];
-        if (!card) return;
-        const gap = 16;
-        const slideWidth = card.offsetWidth + gap;
-        const maxIndex = Math.max(0, cards.length - cardsPerView());
-        index = Math.max(0, Math.min(index, maxIndex));
-        track.style.transform = `translateX(${-index * slideWidth}px)`;
-        prevBtn.disabled = index === 0;
-        nextBtn.disabled = index === maxIndex;
-      }
+</section>
+</div>
 
-      prevBtn.onclick = () => { index--; update(); };
-      nextBtn.onclick = () => { index++; update(); };
-      window.addEventListener("resize", update);
-      window.addEventListener("load", update);
-    })();
-  </script>
+<script>
+(function(){
+  const track = document.querySelector('[data-track]');
+  const viewport = document.querySelector('[data-viewport]');
+  const prev = document.querySelector('[data-prev]');
+  const next = document.querySelector('[data-next]');
+  let index = 0;
+
+  function update(){
+    const cardWidth = track.children[0].offsetWidth + 16;
+    track.style.transform = `translateX(${-index * cardWidth}px)`;
+  }
+
+  prev.onclick = () => { index = Math.max(0, index - 1); update(); };
+  next.onclick = () => { index = Math.min(track.children.length - 1, index + 1); update(); };
+})();
+</script>
+
+<script>
+document.querySelectorAll('.course-card').forEach(card => {
+  card.onclick = () => window.open('https://testbk.co/1i5nl','_blank');
+});
+</script>
+
 </body>
 </html>
